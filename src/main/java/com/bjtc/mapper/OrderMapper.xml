@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjtc.mapper.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.bjtc.pojo.Order" >
+    <id column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="order_seller_id" property="orderSellerId" jdbcType="INTEGER" />
+    <result column="order_seller_name" property="orderSellerName" jdbcType="VARCHAR" />
+    <result column="order_buyer_id" property="orderBuyerId" jdbcType="INTEGER" />
+    <result column="order_buyer_name" property="orderBuyerName" jdbcType="VARCHAR" />
+    <result column="order_receive_id" property="orderReceiveId" jdbcType="INTEGER" />
+    <result column="order_status" property="orderStatus" jdbcType="CHAR" />
+    <result column="order_item_describe" property="orderItemDescribe" jdbcType="VARCHAR" />
+    <result column="order_receive_name" property="orderReceiveName" jdbcType="VARCHAR" />
+    <result column="order_price" property="orderPrice" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    order_id, order_seller_id, order_seller_name, order_buyer_id, order_buyer_name, order_receive_id, 
+    order_status, order_item_describe, order_receive_name, order_price
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bjtc.pojo.OrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bjtc.pojo.OrderExample" >
+    delete from order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bjtc.pojo.Order" >
+    insert into order (order_id, order_seller_id, order_seller_name, 
+      order_buyer_id, order_buyer_name, order_receive_id, 
+      order_status, order_item_describe, order_receive_name, 
+      order_price)
+    values (#{orderId,jdbcType=INTEGER}, #{orderSellerId,jdbcType=INTEGER}, #{orderSellerName,jdbcType=VARCHAR}, 
+      #{orderBuyerId,jdbcType=INTEGER}, #{orderBuyerName,jdbcType=VARCHAR}, #{orderReceiveId,jdbcType=INTEGER}, 
+      #{orderStatus,jdbcType=CHAR}, #{orderItemDescribe,jdbcType=VARCHAR}, #{orderReceiveName,jdbcType=VARCHAR}, 
+      #{orderPrice,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bjtc.pojo.Order" >
+    insert into order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderSellerId != null" >
+        order_seller_id,
+      </if>
+      <if test="orderSellerName != null" >
+        order_seller_name,
+      </if>
+      <if test="orderBuyerId != null" >
+        order_buyer_id,
+      </if>
+      <if test="orderBuyerName != null" >
+        order_buyer_name,
+      </if>
+      <if test="orderReceiveId != null" >
+        order_receive_id,
+      </if>
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="orderItemDescribe != null" >
+        order_item_describe,
+      </if>
+      <if test="orderReceiveName != null" >
+        order_receive_name,
+      </if>
+      <if test="orderPrice != null" >
+        order_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderSellerId != null" >
+        #{orderSellerId,jdbcType=INTEGER},
+      </if>
+      <if test="orderSellerName != null" >
+        #{orderSellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderBuyerId != null" >
+        #{orderBuyerId,jdbcType=INTEGER},
+      </if>
+      <if test="orderBuyerName != null" >
+        #{orderBuyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReceiveId != null" >
+        #{orderReceiveId,jdbcType=INTEGER},
+      </if>
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderItemDescribe != null" >
+        #{orderItemDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReceiveName != null" >
+        #{orderReceiveName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bjtc.pojo.OrderExample" resultType="java.lang.Integer" >
+    select count(*) from order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update order
+    <set >
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderSellerId != null" >
+        order_seller_id = #{record.orderSellerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderSellerName != null" >
+        order_seller_name = #{record.orderSellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderBuyerId != null" >
+        order_buyer_id = #{record.orderBuyerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderBuyerName != null" >
+        order_buyer_name = #{record.orderBuyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderReceiveId != null" >
+        order_receive_id = #{record.orderReceiveId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderStatus != null" >
+        order_status = #{record.orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.orderItemDescribe != null" >
+        order_item_describe = #{record.orderItemDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderReceiveName != null" >
+        order_receive_name = #{record.orderReceiveName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderPrice != null" >
+        order_price = #{record.orderPrice,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update order
+    set order_id = #{record.orderId,jdbcType=INTEGER},
+      order_seller_id = #{record.orderSellerId,jdbcType=INTEGER},
+      order_seller_name = #{record.orderSellerName,jdbcType=VARCHAR},
+      order_buyer_id = #{record.orderBuyerId,jdbcType=INTEGER},
+      order_buyer_name = #{record.orderBuyerName,jdbcType=VARCHAR},
+      order_receive_id = #{record.orderReceiveId,jdbcType=INTEGER},
+      order_status = #{record.orderStatus,jdbcType=CHAR},
+      order_item_describe = #{record.orderItemDescribe,jdbcType=VARCHAR},
+      order_receive_name = #{record.orderReceiveName,jdbcType=VARCHAR},
+      order_price = #{record.orderPrice,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bjtc.pojo.Order" >
+    update order
+    <set >
+      <if test="orderSellerId != null" >
+        order_seller_id = #{orderSellerId,jdbcType=INTEGER},
+      </if>
+      <if test="orderSellerName != null" >
+        order_seller_name = #{orderSellerName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderBuyerId != null" >
+        order_buyer_id = #{orderBuyerId,jdbcType=INTEGER},
+      </if>
+      <if test="orderBuyerName != null" >
+        order_buyer_name = #{orderBuyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReceiveId != null" >
+        order_receive_id = #{orderReceiveId,jdbcType=INTEGER},
+      </if>
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderItemDescribe != null" >
+        order_item_describe = #{orderItemDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReceiveName != null" >
+        order_receive_name = #{orderReceiveName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPrice != null" >
+        order_price = #{orderPrice,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bjtc.pojo.Order" >
+    update order
+    set order_seller_id = #{orderSellerId,jdbcType=INTEGER},
+      order_seller_name = #{orderSellerName,jdbcType=VARCHAR},
+      order_buyer_id = #{orderBuyerId,jdbcType=INTEGER},
+      order_buyer_name = #{orderBuyerName,jdbcType=VARCHAR},
+      order_receive_id = #{orderReceiveId,jdbcType=INTEGER},
+      order_status = #{orderStatus,jdbcType=CHAR},
+      order_item_describe = #{orderItemDescribe,jdbcType=VARCHAR},
+      order_receive_name = #{orderReceiveName,jdbcType=VARCHAR},
+      order_price = #{orderPrice,jdbcType=DOUBLE}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+</mapper>
