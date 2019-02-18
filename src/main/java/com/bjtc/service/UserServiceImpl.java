@@ -5,7 +5,6 @@ import com.bjtc.pojo.User;
 import com.bjtc.pojo.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
@@ -70,21 +69,46 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User user) {
-        return false;
+        try {
+            userMapper.insert(user);
+            return  true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override
     public boolean addUsers(List<User> users) {
-        return false;
+        try {
+            for (User user : users) {
+                this.addUser(user);
+            }
+            return true;
+        }catch (Exception e){
+            return  false;
+        }
+
     }
 
     @Override
     public boolean updateUser(User user) {
-        return false;
+        try {
+            userMapper.updateByPrimaryKey(user);
+            return  true;
+        }catch (Exception e){
+            return  false;
+        }
     }
 
     @Override
     public boolean updateUsers(List<User> users) {
-        return false;
+        try {
+            for (User user : users) {
+                this.updateUser(user);
+            }
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

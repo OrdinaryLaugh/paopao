@@ -21,52 +21,52 @@ public interface ItemService {
 
     /**
      * 根据商品的id获取对应的商品信息
-     * @param ItemId
+     * @param itemId
      * @return
      */
-    Item selectItemById(Object ItemId);
+    Item selectItemById(Object itemId);
 
     /**
      * 根据商品分类获取本商品的分类信息
-     * @param ItemId
+     * @param itemId
      * @return
      */
-    Category selectItemCategoryByItemId(Object ItemId);
+    Category selectItemCategoryByItemId(Object itemId);
 
     /**
      *获取本商品分类信息
-     * @param Item
+     * @param item
      * @return
      */
-    Category selectItemCategoryByItem(Object Item);
+    Category selectItemCategoryByItem(Object item);
 
     /**
      * 根据物品id获取物品持有者的手机号（若没有则返回null）
-     * @param ItemId
+     * @param itemId
      * @return
      */
-    String selectItemUserPhoneByItemId(Object ItemId);
+    String selectItemUserPhoneByItemId(Object itemId);
 
     /**
      * 获取对应物品的持有者的手机号（若没有则返回null）
-     * @param Item
+     * @param item
      * @return
      */
-    String selectItemUserPhoneByItem(Object Item);
+    String selectItemUserPhoneByItem(Object item);
 
     /**
      * 根据ItemUserId获取该人员管理的所有商品
-     * @param ItemUserId
+     * @param itemUserId
      * @return
      */
-    String selectItemsByItemUser(Integer ItemUserId);
+    List<Item> selectItemsByItemUserId(Integer itemUserId);
 
     /**
      * 根据关键字来搜索所有有关的物品列表
-     * @param Key
+     * @param key
      * @return
      */
-    List<Item> selectItemsByKey(String Key);
+    List<Item> selectItemsByKey(String key);
 
     /**
      * 添加一个物品
@@ -105,8 +105,8 @@ public interface ItemService {
 
     /**
      * 根据ids删除一批物品
-     * @param Ids
+     * @param ids
      * @return
      */
-    boolean deleteItemsByItemIds(List<Integer> Ids);
+    boolean deleteItemsByItemIds(List<Integer> ids);
 }

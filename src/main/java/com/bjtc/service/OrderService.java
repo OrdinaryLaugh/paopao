@@ -5,7 +5,9 @@ import com.bjtc.pojo.Order;
 import java.util.List;
 
 public interface OrderService {
-    List<Order> selectUserOrdersByUserId(Integer userId);
+    List<Order> selectUserReceiveOrdersByUserId(Integer userId);
+    List<Order> selectSellerOrdersByUserId(Integer userId);
+    List<Order> selectUserBuyOrdersByUserId(Integer userId);
     List<Order> selectOrdersByItemId(Integer itemId);
     Order selectOrderByOrderId(Integer orderId);
     boolean addOrder(Order order);
