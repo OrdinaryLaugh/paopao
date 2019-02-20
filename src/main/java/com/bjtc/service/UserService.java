@@ -6,5 +6,12 @@ import java.util.List;
 
 public interface UserService {
     List<User> selectAllUser();
-    User selectUserByid(int id);
+    User selectUserById(Object id);
+    List<User> selectUserByKey(String key);
+    boolean deleteUserById(Object id);
+    boolean deleteUserByIds(List<Integer> ids);
+    boolean addUser(User user);
+    boolean addUsers(List<User> users);
+    boolean updateUser(User user);
+    boolean updateUsers(List<User> users);
 }
