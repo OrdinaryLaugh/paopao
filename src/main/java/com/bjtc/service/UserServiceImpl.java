@@ -24,6 +24,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User selectUserByPhoneNumber(String phoneNumber) {
+       return userMapper.selectByPhoneNumber(phoneNumber);
+    }
+
+    @Override
     public List<User> selectUserByKey(String key) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
