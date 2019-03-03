@@ -5,7 +5,6 @@ import com.bjtc.mapper.ItemMapper;
 import com.bjtc.pojo.Category;
 import com.bjtc.pojo.Item;
 import com.bjtc.pojo.ItemExample;
-import com.sun.deploy.panel.ITreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
