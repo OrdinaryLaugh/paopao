@@ -12,9 +12,10 @@
 
     <!-- 配置注解驱动 -->
     <mvc:annotation-driven />
+    <!-- 配置拦截器 -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/*/**"/>
+            <mvc:mapping path="/**"/>
             <bean class="com.bjtc.interceptor.AccessInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

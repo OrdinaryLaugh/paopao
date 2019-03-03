@@ -93,6 +93,12 @@
     from user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
+  <select id="selectByPhoneNumber" resultMap="BaseResultMap" parameterType="String" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where user_phone = #{phoneNumber}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user
     where user_id = #{userId,jdbcType=INTEGER}
@@ -248,7 +254,6 @@
   <update id="updateByPrimaryKey" parameterType="com.bjtc.pojo.User" >
     update user
     set user_name = #{userName,jdbcType=VARCHAR},
-      user_password = #{userPassword,jdbcType=VARCHAR},
       user_phone = #{userPhone,jdbcType=VARCHAR},
       user_mail = #{userMail,jdbcType=VARCHAR},
       user_create_date = #{userCreateDate,jdbcType=TIMESTAMP},
