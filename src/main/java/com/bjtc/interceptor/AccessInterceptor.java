@@ -43,6 +43,9 @@ public class AccessInterceptor implements HandlerInterceptor {
         Cookie[] cookies = request.getCookies();
         Object userPhone = session.getAttribute("userPhone");
         Object userPassword = session.getAttribute("userPassword");
+        if(userPhone==null||userPassword==null){
+            return false;
+        }
         for(Cookie cookie:cookies){
             if(cookie.getName().equals("userPhone")){
                 isExistUser=true;
