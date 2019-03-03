@@ -48,7 +48,7 @@ public class UserController {
             Cookie cookieUserPhone=new Cookie("userPhone",user.getUserPhone());
             cookieUserPhone.setMaxAge(7*60*60*24);
             Cookie cookie=new Cookie("JSESSIONID",session.getId());
-            cookie.setPath("/path");
+            cookie.setPath("/");
             cookie.setMaxAge(7*60*60*24);
             response.addCookie(cookieUserPhone);
             response.addCookie(cookie);
