@@ -12,10 +12,17 @@
 
     <!-- 配置注解驱动 -->
     <mvc:annotation-driven />
-    <!-- 配置拦截器 -->
+    <!-- 配置用户拦截器 -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/**"/>
+            <mvc:mapping path="/paopao/user/*"/>
+            <bean class="com.bjtc.interceptor.AccessInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <!-- 配置管理员拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/paopao/admin/*"/>
             <bean class="com.bjtc.interceptor.AccessInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

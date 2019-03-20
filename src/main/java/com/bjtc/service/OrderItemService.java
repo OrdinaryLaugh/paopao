@@ -6,7 +6,7 @@ import com.bjtc.pojo.OrderItem;
 import java.util.List;
 
 public interface OrderItemService {
-    List<OrderItem> selectOrderItemsByOrderId(Integer orderId);
+    List<OrderItem> selectOrderItemsByOrderId(String  orderId);
     List<List<OrderItem>> selectOrderItemsByOrders(List<Order> orders);
     List<OrderItem> selectOrderItemsByItemId(Integer itemId);
     boolean addOrderItem(OrderItem orderItem);

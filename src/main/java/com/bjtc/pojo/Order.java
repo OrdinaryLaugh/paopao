@@ -1,7 +1,7 @@
 package com.bjtc.pojo;
 
 public class Order {
-    private Integer orderId;
+    private String orderId;
 
     private Integer orderSellerId;
 
@@ -21,11 +21,17 @@ public class Order {
 
     private Double orderPrice;
 
-    public Integer getOrderId() {
+    private String orderSellerPhone;
+
+    private String orderBuyerPhone;
+
+    private String orderReceivePhone;
+
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(String  orderId) {
         this.orderId = orderId;
     }
 
@@ -99,5 +105,29 @@ public class Order {
 
     public void setOrderPrice(Double orderPrice) {
         this.orderPrice = orderPrice;
+    }
+
+    public String getOrderSellerPhone() {
+        return orderSellerPhone;
+    }
+
+    public void setOrderSellerPhone(String orderSellerPhone) {
+        this.orderSellerPhone = orderSellerPhone;
+    }
+
+    public String getOrderBuyerPhone() {
+        return orderBuyerPhone;
+    }
+
+    public void setOrderBuyerPhone(String orderBuyerPhone) {
+        this.orderBuyerPhone = orderBuyerPhone;
+    }
+
+    public String getOrderReceivePhone() {
+        return orderReceivePhone;
+    }
+
+    public void setOrderReceivePhone(String orderReceivePhone) {
+        this.orderReceivePhone = orderReceivePhone;
     }
 }

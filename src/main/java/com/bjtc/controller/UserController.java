@@ -1,11 +1,13 @@
 package com.bjtc.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.bjtc.pojo.RequestData;
 import com.bjtc.pojo.User;
 import com.bjtc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import sun.awt.SunHints;
 
@@ -14,25 +16,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
+@RequestMapping(value = "/user")
 public class UserController {
     @Autowired
     private UserService userService;
 
     /**
      * 用户登录
-     * @param phoneNumber
-     * @param password
      * @return
      */
-    @RequestMapping(value="/userLogin")
-    public  ModelAndView userLogin (HttpServletRequest request,HttpServletResponse response,String phoneNumber, String password){
+    @RequestMapping(value="/userLogin",method = RequestMethod.POST)
+    @ResponseBody
+    public  ModelAndView userLogin (HttpServletRequest request, HttpServletResponse response,@RequestBody RequestData data ){
         ModelAndView modelAndView = new ModelAndView();
+        String phoneNumber=data.getPhoneNumber();
+        String password=data.getPassword();
         User user = userService.selectUserByPhoneNumber(phoneNumber);
         if(user==null){
             modelAndView.setViewName("index");
@@ -50,12 +51,14 @@ public class UserController {
             Cookie cookie=new Cookie("JSESSIONID",session.getId());
             cookie.setPath("/");
             cookie.setMaxAge(7*60*60*24);
+            cookie.setHttpOnly(true);
+            cookieUserPhone.setHttpOnly(true);
             response.addCookie(cookieUserPhone);
             response.addCookie(cookie);
             //给客户端返回 JessionId
             modelAndView.addObject("cookie",cookie);
             modelAndView.addObject("user",user);
-            modelAndView.setViewName("index");
+            modelAndView.setViewName("success");
         }
         return modelAndView;
     }
@@ -199,4 +202,5 @@ public class UserController {
         modelAndView.addObject("result","successed");
         return modelAndView;
     }
+
 }

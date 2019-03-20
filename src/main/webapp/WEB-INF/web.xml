@@ -7,6 +7,23 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+
+  <!--Spring log4j Config loader-->
+  <listener>
+    <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
+  </listener>
+  <filter>
+    <filter-name>log4jServletFilter</filter-name>
+    <filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>log4jServletFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
   <!-- 配置spring -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -55,4 +72,8 @@
     <!-- 所有的请求都进入springMVC -->
     <url-pattern>*.action</url-pattern>
   </servlet-mapping>
+
+
+
+
 </web-app>

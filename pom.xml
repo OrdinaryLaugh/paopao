@@ -18,9 +18,9 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <spring.version>4.0.5.RELEASE</spring.version>
-    <mybatis.version>3.2.1</mybatis.version>
+    <mybatis.version>3.2.8</mybatis.version>
     <slf4j.version>1.6.6</slf4j.version>
-    <log4j.version>1.2.12</log4j.version>
+    <log4j.version>2.10.0</log4j.version>
     <mysql.version>5.1.35</mysql.version>
     <pagehelper.version>3.4.2-fix</pagehelper.version>
     <mybatis.paginator.version>1.2.15</mybatis.paginator.version>
@@ -128,14 +128,29 @@
 
     <!--日志处理包-->
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-web</artifactId>
       <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>${log4j.version}</version>
     </dependency>
 
     <!--mybatis依赖 -->

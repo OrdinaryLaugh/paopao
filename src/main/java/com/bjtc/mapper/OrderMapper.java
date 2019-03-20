@@ -4,13 +4,14 @@ import com.bjtc.pojo.Order;
 import com.bjtc.pojo.OrderExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.aspectj.weaver.ast.Or;
 
 public interface OrderMapper {
     int countByExample(OrderExample example);
 
     int deleteByExample(OrderExample example);
 
-    int deleteByPrimaryKey(Integer orderId);
+    int deleteByPrimaryKey(String  orderId);
 
     int insert(Order record);
 
@@ -18,7 +19,11 @@ public interface OrderMapper {
 
     List<Order> selectByExample(OrderExample example);
 
-    Order selectByPrimaryKey(Integer orderId);
+    List<Order> selectByPhone(String phone);
+
+    Order selectByOrderId(String orderId);
+
+    Order selectByPrimaryKey(String orderId);
 
     int updateByExampleSelective(@Param("record") Order record, @Param("example") OrderExample example);
 

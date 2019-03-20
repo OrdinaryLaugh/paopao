@@ -14,7 +14,7 @@ public class OrderItemServiceImpl implements OrderItemService{
     @Autowired
     OrderItemMapper orderItemMapper;
     @Override
-    public List<OrderItem> selectOrderItemsByOrderId(Integer orderId) {
+    public List<OrderItem> selectOrderItemsByOrderId(String orderId) {
         OrderItemExample orderItemExample = new OrderItemExample();
         OrderItemExample.Criteria criteria = orderItemExample.createCriteria();
         criteria.andOrderIdEqualTo(orderId);

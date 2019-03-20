@@ -6,6 +6,7 @@ import com.bjtc.pojo.Order;
 import com.bjtc.pojo.OrderExample;
 import com.bjtc.pojo.OrderItem;
 import com.bjtc.pojo.OrderItemExample;
+import com.bjtc.util.CheckInputUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,29 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.selectByExample(orderExample);
     }
 
+    /**
+     * 根据输入的手机号或订单号查询订单
+     * @param number
+     * @return
+     */
+    @Override
+    public List<Order> selectOrderByNumber(String number) {
+        boolean isOrder = CheckInputUtils.checkOrder(number);
+        List<Order> orderList=new ArrayList<>();
+        if(isOrder){
+            Order order = orderMapper.selectByOrderId(number);
+            orderList.add(order);
+            return orderList;
+        }
+        boolean isPhone=CheckInputUtils.checkPhone(number);
+        if(isPhone){
+            List<Order> orders = orderMapper.selectByPhone(number);
+            orderList=orders;
+            return orderList;
+        }
+        return orderList;
+    }
+
     @Override
     public List<Order> selectOrdersByItemId(Integer itemId) {
         List<Integer> orderIds = new ArrayList<>();
@@ -59,9 +83,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order selectOrderByOrderId(Integer orderId) {
-        return orderMapper.selectByPrimaryKey(orderId);
+    public List<Order> selectByPhone(String phone) {
+        boolean result = CheckInputUtils.checkPhone(phone);
+        if(!result){
+            return null;
+        }
+        return orderMapper.selectByPhone(phone);
     }
+
+    @Override
+    public Order selectByOrderId(String orderId) {
+        boolean result = CheckInputUtils.checkOrder(orderId);
+        if(!result){
+            return null;
+        }
+
+        return orderMapper.selectByOrderId(orderId);
+    }
+
 
     @Override
     public boolean addOrder(Order order) {
@@ -106,7 +145,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean deleteOrderByOrderId(Integer orderId) {
+    public boolean deleteOrderByOrderId(String orderId) {
         try {
             orderMapper.deleteByPrimaryKey(orderId);
             return true;

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjtc.mapper.AdminMapper" >
+    <resultMap id="AdminResultMap" type="com.bjtc.pojo.Admin" >
+        <id column="admin_id" property="adminId" jdbcType="INTEGER" />
+        <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+        <result column="admin_password" property="adminPassword" jdbcType="VARCHAR" />
+        <result column="admin_phone" property="adminPhone" jdbcType="VARCHAR" />
+        <result column="admin_mail" property="adminMail" jdbcType="VARCHAR" />
+        <result column="admin_create_date" property="adminCreateDate" jdbcType="TIMESTAMP" />
+        <result column="admin_update_date" property="adminUpdateDate" jdbcType="TIMESTAMP" />
+        <result column="admin_role" property="adminRole" jdbcType="INTEGER" />
+    </resultMap>
+    <insert id="addAdmin" parameterType="com.bjtc.pojo.Admin" >
+    insert into admin (admin_id, admin_name, admin_password,
+      admin_phone, admin_mail, admin_create_date,
+      admin_update_date, admin_role)
+    values (#{adminId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{adminPassword,jdbcType=VARCHAR},
+      #{adminPhone,jdbcType=VARCHAR}, #{adminMail,jdbcType=VARCHAR}, #{adminCreateDate,jdbcType=TIMESTAMP},
+      #{adminUpdateDate,jdbcType=TIMESTAMP}, #{adminRole,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteAdmin" parameterType="com.bjtc.pojo.Admin" >
+    delete from admin
+    where admin_id = #{adminId,jdbcType=INTEGER} and admin_phone = #{adminPhone,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteAdminByPhone" parameterType="java.lang.String" >
+    delete from admin
+    where  admin_phone = #{phone,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="selectAdminByPhone" resultMap="AdminResultMap" parameterType="java.lang.String" >
+        select *
+        from admin
+        where admin_phone = #{phone,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAdmin" resultMap="AdminResultMap" parameterType="com.bjtc.pojo.Admin" >
+        select
+        *
+        from admin
+        where admin_phone = #{adminPhone,jdbcType=VARCHAR} and admin_id = #{adminId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAllAdmin" resultMap="AdminResultMap" >
+        select
+        *
+        from admin
+    </select>
+
+    <update id="updateAdmin" parameterType="com.bjtc.pojo.Admin" >
+    update user
+    set admin_name = #{adminName,jdbcType=VARCHAR},
+      admin_phone = #{adminPhone,jdbcType=VARCHAR},
+      admin_mail = #{adminMail,jdbcType=VARCHAR},
+      admin_create_date = #{adminCreateDate,jdbcType=TIMESTAMP},
+      admin_update_date = #{adminUpdateDate,jdbcType=TIMESTAMP},
+      admin_role = #{adminRole,jdbcType=INTEGER}
+    where admin_id = #{adminId,jdbcType=INTEGER}
+    </update>
+</mapper>
