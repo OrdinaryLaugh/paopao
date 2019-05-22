@@ -8,7 +8,6 @@ public interface UserService {
     List<User> selectAllUser();
     User selectUserById(Object id);
     User selectUserByPhoneNumber(String phoneNumber);
-    List<User> selectUserByKey(String key);
     boolean deleteUserById(Object id);
     boolean deleteUserByIds(List<Integer> ids);
     boolean addUser(User user);

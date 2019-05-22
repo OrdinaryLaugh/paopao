@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjtc.mapper.EvaluationMapper">
+    <resultMap id="evaluationMap" type="com.bjtc.pojo.Evaluation">
+        <id column="evaluation_id" property="evaluationId" jdbcType="INTEGER" />
+        <result column="evaluation_message" property="evaluationMessage" jdbcType="VARCHAR" />
+        <result column="order_id" property="orderId" jdbcType="VARCHAR"/>
+        <result column="evaluation_img" property="evaluationImg" jdbcType="VARCHAR" />
+        <result column="seller_id" property="sellerId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="receiver_id" property="receiverId" jdbcType="INTEGER" />
+    </resultMap>
+    <insert id="addEvaluation" parameterType="com.bjtc.pojo.Evaluation">
+        insert into evaluation(evaluation_id,evaluation_message,order_id,evaluation_img,seller_id,user_id,receiver_id)
+        values(#{evaluationId},#{evaluationMessage},#{orderId},#{evaluationImg},#{sellerId},#{userId},#{receiverId})
+    </insert>
+    <select id="getEvaluationBySellerId" resultType="com.bjtc.pojo.Evaluation" parameterType="java.lang.String">
+        select * from evaluation where seller_id = #{sellerId}
+    </select>
+    <select id="getEvaluationByOrderId" resultType="com.bjtc.pojo.Evaluation" parameterType="java.lang.String">
+        select * from evaluation where order_id = #{orderId}
+    </select>
+    <delete id="deleteEvaluation" parameterType="com.bjtc.pojo.Evaluation" >
+        delete from evaluation where evaluation_id = #{evaluationId}
+    </delete>
+</mapper>

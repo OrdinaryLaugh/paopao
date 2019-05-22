@@ -19,6 +19,16 @@ public class User {
 
     private String userIdentity;
 
+    private String userAddress;
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+    }
+
     public Integer getUserId() {
         return userId;
     }

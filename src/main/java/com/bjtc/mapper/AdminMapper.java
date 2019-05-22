@@ -16,6 +16,8 @@ public interface AdminMapper {
 
     public Admin selectAdminByPhone(String phone);
 
+    List<Admin> getApprovingAdmins();
+
     public List<Admin> selectAllAdmin();
 
     public boolean updateAdmin(Admin admin);

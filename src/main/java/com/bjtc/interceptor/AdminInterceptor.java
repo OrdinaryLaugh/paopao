@@ -1,6 +1,7 @@
 package com.bjtc.interceptor;
 
 import com.bjtc.pojo.Admin;
+import com.bjtc.pojo.Seller;
 import com.bjtc.pojo.User;
 import com.bjtc.service.AdminService;
 import com.bjtc.service.UserService;
@@ -45,21 +46,24 @@ public class AdminInterceptor implements HandlerInterceptor {
         Cookie[] cookies = request.getCookies();
         Object adminPhone = session.getAttribute("adminPhone");
         Object adminPassword = session.getAttribute("adminPassword");
+
         if(adminPhone==null||adminPassword==null){
-            return false;
+           return false;
         }
+        Admin admin = null;
         for(Cookie cookie:cookies){
             if(cookie.getName().equals("adminPhone")){
                 isExistAdmin=true;
-                Admin admin = adminService.selectAdminByPhone(adminPhone.toString());
+                 admin = adminService.selectAdminByPhone(adminPhone.toString());
                 if(!cookie.getValue().equals(adminPhone)||adminPassword.equals(admin.getAdminPassword())){
-                    response.sendRedirect("index.jsp");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
                     return false;
                 }
             }
         }
-        if(!isExistAdmin){
-            response.sendRedirect("index.jsp");
+        if(!isExistAdmin||admin == null){
+            response.sendRedirect("/paopao/admin/adminLogin");
             return false;
         }
         // 设置：Access-Control-Allow-Origin头，处理Session问题

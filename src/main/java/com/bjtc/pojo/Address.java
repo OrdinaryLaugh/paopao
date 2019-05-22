@@ -5,7 +5,8 @@ public class Address {
 
     private String address;
 
-    private Integer userId;
+    //1为商家地址，2为用户收货地址
+    private Integer addressStatus;
 
     public Integer getAddressId() {
         return addressId;
@@ -23,12 +24,12 @@ public class Address {
         this.address = address == null ? null : address.trim();
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getAddressStatus() {
+        return addressStatus;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setAddressStatus(Integer addressStatus) {
+        this.addressStatus = addressStatus;
     }
 
     @Override
@@ -36,7 +37,7 @@ public class Address {
         return "Address{" +
                 "addressId=" + addressId +
                 ", address='" + address + '\'' +
-                ", userId=" + userId +
+                ", addressStatus=" + addressStatus +
                 '}';
     }
 }

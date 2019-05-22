@@ -39,6 +39,9 @@ public class Admin {
 
     private Integer adminRole;
 
+    private String adminAddress;
+
+
     public Integer getAdminId() {
         return adminId;
     }
@@ -101,5 +104,12 @@ public class Admin {
 
     public void setAdminRole(Integer adminRole) {
         this.adminRole = adminRole;
+    }
+    public String getAdminAddress() {
+        return adminAddress;
+    }
+
+    public void setAdminAddress(String adminAddress) {
+        this.adminAddress = adminAddress;
     }
 }

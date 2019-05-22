@@ -214,7 +214,13 @@
       <version>RELEASE</version>
     </dependency>
 
-
+    <!--短信验证API-->
+    <!-- https://mvnrepository.com/artifact/com.github.qcloudsms/qcloudsms -->
+    <dependency>
+      <groupId>com.github.qcloudsms</groupId>
+      <artifactId>qcloudsms</artifactId>
+      <version>1.0.6</version>
+    </dependency>
   </dependencies>
 
   <build>

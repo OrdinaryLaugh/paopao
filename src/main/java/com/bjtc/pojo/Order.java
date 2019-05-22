@@ -1,5 +1,7 @@
 package com.bjtc.pojo;
 
+import java.util.Date;
+
 public class Order {
     private String orderId;
 
@@ -19,6 +21,16 @@ public class Order {
 
     private String orderReceiveName;
 
+    public String getOrderSize() {
+        return orderSize;
+    }
+
+    public void setOrderSize(String orderSize) {
+        this.orderSize = orderSize;
+    }
+
+    private String orderSize;
+
     private Double orderPrice;
 
     private String orderSellerPhone;
@@ -26,6 +38,38 @@ public class Order {
     private String orderBuyerPhone;
 
     private String orderReceivePhone;
+
+    private Date orderCreateDate;
+
+    private Date orderUpdateDate;
+    //最晚收货时间
+    private Date orderBuyerDate;
+    //需要代跑的地点（如：具体的某个快递点、超市）
+    private String orderShopAddress;
+    //收货地址
+    private String orderBuyerAddress;
+    //订单备注
+    private String orderRemarks;
+    //送取模式（送货上门或者送到楼下之类的）
+    private String orderDeliveryPattern;
+
+    public String getOrderRemarks() {
+        return orderRemarks;
+    }
+
+    public void setOrderRemarks(String orderRemarks) {
+        this.orderRemarks = orderRemarks;
+    }
+
+    public String getOrderDeliveryPattern() {
+        return orderDeliveryPattern;
+    }
+
+    public void setOrderDeliveryPattern(String orderDeliveryPattern) {
+        this.orderDeliveryPattern = orderDeliveryPattern;
+    }
+
+
 
     public String getOrderId() {
         return orderId;
@@ -129,5 +173,44 @@ public class Order {
 
     public void setOrderReceivePhone(String orderReceivePhone) {
         this.orderReceivePhone = orderReceivePhone;
+    }
+    public Date getOrderCreateDate() {
+        return orderCreateDate;
+    }
+
+    public void setOrderCreateDate(Date orderCreateDate) {
+        this.orderCreateDate = orderCreateDate;
+    }
+
+    public Date getOrderUpdateDate() {
+        return orderUpdateDate;
+    }
+
+    public void setOrderUpdateDate(Date orderUpdateDate) {
+        this.orderUpdateDate = orderUpdateDate;
+    }
+
+    public Date getOrderBuyerDate() {
+        return orderBuyerDate;
+    }
+
+    public void setOrderBuyerDate(Date orderBuyerDate) {
+        this.orderBuyerDate = orderBuyerDate;
+    }
+
+    public String getOrderShopAddress() {
+        return orderShopAddress;
+    }
+
+    public void setOrderShopAddress(String orderShopAddress) {
+        this.orderShopAddress = orderShopAddress;
+    }
+
+    public String getOrderBuyerAddress() {
+        return orderBuyerAddress;
+    }
+
+    public void setOrderBuyerAddress(String orderBuyerAddress) {
+        this.orderBuyerAddress = orderBuyerAddress;
     }
 }

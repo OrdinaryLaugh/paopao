@@ -10,14 +10,15 @@
         <result column="admin_create_date" property="adminCreateDate" jdbcType="TIMESTAMP" />
         <result column="admin_update_date" property="adminUpdateDate" jdbcType="TIMESTAMP" />
         <result column="admin_role" property="adminRole" jdbcType="INTEGER" />
+        <result column="admin_address" property="adminAddress" jdbcType="VARCHAR" />
     </resultMap>
     <insert id="addAdmin" parameterType="com.bjtc.pojo.Admin" >
     insert into admin (admin_id, admin_name, admin_password,
       admin_phone, admin_mail, admin_create_date,
-      admin_update_date, admin_role)
+      admin_update_date, admin_role,admin_address)
     values (#{adminId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{adminPassword,jdbcType=VARCHAR},
       #{adminPhone,jdbcType=VARCHAR}, #{adminMail,jdbcType=VARCHAR}, #{adminCreateDate,jdbcType=TIMESTAMP},
-      #{adminUpdateDate,jdbcType=TIMESTAMP}, #{adminRole,jdbcType=INTEGER})
+      #{adminUpdateDate,jdbcType=TIMESTAMP}, #{adminRole,jdbcType=INTEGER},#{adminAddress,jdbcType=VARCHAR})
     </insert>
 
     <delete id="deleteAdmin" parameterType="com.bjtc.pojo.Admin" >
@@ -46,7 +47,13 @@
     <select id="selectAllAdmin" resultMap="AdminResultMap" >
         select
         *
+        from admin where admin_role = 0
+    </select>
+
+    <select id="getApprovingAdmins" resultMap="AdminResultMap">
+        select *
         from admin
+        where admin_role = 0
     </select>
 
     <update id="updateAdmin" parameterType="com.bjtc.pojo.Admin" >
@@ -56,7 +63,8 @@
       admin_mail = #{adminMail,jdbcType=VARCHAR},
       admin_create_date = #{adminCreateDate,jdbcType=TIMESTAMP},
       admin_update_date = #{adminUpdateDate,jdbcType=TIMESTAMP},
-      admin_role = #{adminRole,jdbcType=INTEGER}
+      admin_role = #{adminRole,jdbcType=INTEGER},
+      admin_address = #{adminAddress,jdbcType=VARCHAR}
     where admin_id = #{adminId,jdbcType=INTEGER}
     </update>
 </mapper>

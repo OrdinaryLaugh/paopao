@@ -1,5 +1,6 @@
 package com.bjtc.util;
 
+import com.bjtc.pojo.Order;
 import org.springframework.util.StringUtils;
 
 import java.util.regex.Matcher;
@@ -11,6 +12,7 @@ import java.util.regex.Pattern;
 public class CheckInputUtils {
     private static Pattern pattern=Pattern.compile("[0-9]*");
 
+    //检查手机号格式
     public static boolean checkPhone(String phone){
         boolean result=true;
         result=checkNumber(phone);
@@ -20,13 +22,24 @@ public class CheckInputUtils {
         }
         return result;
     }
-    public static boolean checkOrder(String orderId){
+    //检查订单id
+    public static boolean checkOrderId(String orderId){
         boolean result=true;
         result=checkNumber(orderId);
-        //订单号长度大于11位
+       /* //订单号长度大于11位
         if(result&&orderId.length()<=11){
             return false;
+        }*/
+        return result;
+    }
+    //检查订单数据是否有误
+    public static boolean checkOrder(Order order){
+        boolean result=true;
+        if(order==null){
+            return false;
         }
+        result=order.getOrderBuyerId()!=null&&order.getOrderBuyerName()!=null&&order.getOrderBuyerPhone()!=null
+                &&order.getOrderPrice()!=null&&order.getOrderBuyerAddress()!=null;
         return result;
     }
     //检查数字格式

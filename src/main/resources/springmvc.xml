@@ -10,22 +10,39 @@
     <!-- 配置controller扫描 -->
     <context:component-scan base-package="com.bjtc.controller" />
 
+
     <!-- 配置注解驱动 -->
     <mvc:annotation-driven />
     <!-- 配置用户拦截器 -->
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/paopao/user/*"/>
+            <mvc:mapping path="/paopao/order/user/*"/>
             <bean class="com.bjtc.interceptor.AccessInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <!-- 配置商家拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/paopao/admin/seller/*"/>
+            <bean class="com.bjtc.interceptor.SellerInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
     <!-- 配置管理员拦截器 -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/paopao/admin/*"/>
+            <mvc:mapping path="/paopao/admin/commonAdmin/*"/>
             <bean class="com.bjtc.interceptor.AccessInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
+    <!-- 配置超级管理员拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/paopao/admin/superAdmin/*"/>
+            <bean class="com.bjtc.interceptor.SuperAdminInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     <!-- 上传图片配置实现类 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="500000000"></property>

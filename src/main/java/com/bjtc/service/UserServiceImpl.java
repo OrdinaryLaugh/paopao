@@ -2,9 +2,10 @@ package com.bjtc.service;
 
 import com.bjtc.mapper.UserMapper;
 import com.bjtc.pojo.User;
-import com.bjtc.pojo.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,7 +19,7 @@ public class UserServiceImpl implements UserService {
             System.out.println(o);
             return userMapper.selectByPrimaryKey(id);
         }else{
-            System.out.println("非法类型");
+            System.out.println("Error Id");
             return null;
         }
     }
@@ -28,25 +29,15 @@ public class UserServiceImpl implements UserService {
        return userMapper.selectByPhoneNumber(phoneNumber);
     }
 
-    @Override
-    public List<User> selectUserByKey(String key) {
-        UserExample userExample = new UserExample();
-        UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andUserNameLike(key);
-        List<User> users = userMapper.selectByExample(userExample);
-        return users;
-    }
 
     @Override
     public List<User> selectAllUser() {
-        UserExample userExample = new UserExample();
-        UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andUserIdIsNotNull();
-        List<User> users = userMapper.selectByExample(userExample);
+        List<User> users = userMapper.selectAllUsers();
         return users;
     }
 
     @Override
+    @Transactional
     public boolean deleteUserById(Object o) {
         if(o instanceof Integer){
             Integer id = (Integer)o;
@@ -60,19 +51,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean deleteUserByIds(List<Integer> ids) {
         if(ids.isEmpty()){
             return false;
         }else{
-            UserExample userExample = new UserExample();
-            UserExample.Criteria criteria = userExample.createCriteria();
-            criteria.andUserIdIn(ids);
-            userMapper.deleteByExample(userExample);
+            for(Integer id:ids){
+                userMapper.deleteByPrimaryKey(id);
+            }
             return true;
         }
     }
 
     @Override
+    @Transactional
     public boolean addUser(User user) {
         try {
             userMapper.insert(user);
@@ -83,6 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean addUsers(List<User> users) {
         try {
             for (User user : users) {
@@ -96,6 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean updateUser(User user) {
         try {
             userMapper.updateByPrimaryKey(user);
@@ -106,6 +100,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean updateUsers(List<User> users) {
         try {
             for (User user : users) {

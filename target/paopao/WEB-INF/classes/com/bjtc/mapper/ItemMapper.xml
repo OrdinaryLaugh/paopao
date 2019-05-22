@@ -76,20 +76,6 @@
     item_id, item_name, item_price, item_image_path, item_category_id, item_status, item_create_date, 
     item_update_date, item_describe, item_user_id, item_user_phone
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bjtc.pojo.ItemExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from item
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -100,12 +86,7 @@
     delete from item
     where item_id = #{itemId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.bjtc.pojo.ItemExample" >
-    delete from item
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
+
   <insert id="insert" parameterType="com.bjtc.pojo.Item" >
     insert into item (item_id, item_name, item_price, 
       item_image_path, item_category_id, item_status, 
@@ -116,179 +97,7 @@
       #{itemCreateDate,jdbcType=TIMESTAMP}, #{itemUpdateDate,jdbcType=TIMESTAMP}, #{itemDescribe,jdbcType=VARCHAR}, 
       #{itemUserId,jdbcType=INTEGER}, #{itemUserPhone,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.bjtc.pojo.Item" >
-    insert into item
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="itemId != null" >
-        item_id,
-      </if>
-      <if test="itemName != null" >
-        item_name,
-      </if>
-      <if test="itemPrice != null" >
-        item_price,
-      </if>
-      <if test="itemImagePath != null" >
-        item_image_path,
-      </if>
-      <if test="itemCategoryId != null" >
-        item_category_id,
-      </if>
-      <if test="itemStatus != null" >
-        item_status,
-      </if>
-      <if test="itemCreateDate != null" >
-        item_create_date,
-      </if>
-      <if test="itemUpdateDate != null" >
-        item_update_date,
-      </if>
-      <if test="itemDescribe != null" >
-        item_describe,
-      </if>
-      <if test="itemUserId != null" >
-        item_user_id,
-      </if>
-      <if test="itemUserPhone != null" >
-        item_user_phone,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="itemId != null" >
-        #{itemId,jdbcType=INTEGER},
-      </if>
-      <if test="itemName != null" >
-        #{itemName,jdbcType=VARCHAR},
-      </if>
-      <if test="itemPrice != null" >
-        #{itemPrice,jdbcType=DOUBLE},
-      </if>
-      <if test="itemImagePath != null" >
-        #{itemImagePath,jdbcType=VARCHAR},
-      </if>
-      <if test="itemCategoryId != null" >
-        #{itemCategoryId,jdbcType=INTEGER},
-      </if>
-      <if test="itemStatus != null" >
-        #{itemStatus,jdbcType=CHAR},
-      </if>
-      <if test="itemCreateDate != null" >
-        #{itemCreateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="itemUpdateDate != null" >
-        #{itemUpdateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="itemDescribe != null" >
-        #{itemDescribe,jdbcType=VARCHAR},
-      </if>
-      <if test="itemUserId != null" >
-        #{itemUserId,jdbcType=INTEGER},
-      </if>
-      <if test="itemUserPhone != null" >
-        #{itemUserPhone,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.bjtc.pojo.ItemExample" resultType="java.lang.Integer" >
-    select count(*) from item
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update item
-    <set >
-      <if test="record.itemId != null" >
-        item_id = #{record.itemId,jdbcType=INTEGER},
-      </if>
-      <if test="record.itemName != null" >
-        item_name = #{record.itemName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.itemPrice != null" >
-        item_price = #{record.itemPrice,jdbcType=DOUBLE},
-      </if>
-      <if test="record.itemImagePath != null" >
-        item_image_path = #{record.itemImagePath,jdbcType=VARCHAR},
-      </if>
-      <if test="record.itemCategoryId != null" >
-        item_category_id = #{record.itemCategoryId,jdbcType=INTEGER},
-      </if>
-      <if test="record.itemStatus != null" >
-        item_status = #{record.itemStatus,jdbcType=CHAR},
-      </if>
-      <if test="record.itemCreateDate != null" >
-        item_create_date = #{record.itemCreateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.itemUpdateDate != null" >
-        item_update_date = #{record.itemUpdateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.itemDescribe != null" >
-        item_describe = #{record.itemDescribe,jdbcType=VARCHAR},
-      </if>
-      <if test="record.itemUserId != null" >
-        item_user_id = #{record.itemUserId,jdbcType=INTEGER},
-      </if>
-      <if test="record.itemUserPhone != null" >
-        item_user_phone = #{record.itemUserPhone,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update item
-    set item_id = #{record.itemId,jdbcType=INTEGER},
-      item_name = #{record.itemName,jdbcType=VARCHAR},
-      item_price = #{record.itemPrice,jdbcType=DOUBLE},
-      item_image_path = #{record.itemImagePath,jdbcType=VARCHAR},
-      item_category_id = #{record.itemCategoryId,jdbcType=INTEGER},
-      item_status = #{record.itemStatus,jdbcType=CHAR},
-      item_create_date = #{record.itemCreateDate,jdbcType=TIMESTAMP},
-      item_update_date = #{record.itemUpdateDate,jdbcType=TIMESTAMP},
-      item_describe = #{record.itemDescribe,jdbcType=VARCHAR},
-      item_user_id = #{record.itemUserId,jdbcType=INTEGER},
-      item_user_phone = #{record.itemUserPhone,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.bjtc.pojo.Item" >
-    update item
-    <set >
-      <if test="itemName != null" >
-        item_name = #{itemName,jdbcType=VARCHAR},
-      </if>
-      <if test="itemPrice != null" >
-        item_price = #{itemPrice,jdbcType=DOUBLE},
-      </if>
-      <if test="itemImagePath != null" >
-        item_image_path = #{itemImagePath,jdbcType=VARCHAR},
-      </if>
-      <if test="itemCategoryId != null" >
-        item_category_id = #{itemCategoryId,jdbcType=INTEGER},
-      </if>
-      <if test="itemStatus != null" >
-        item_status = #{itemStatus,jdbcType=CHAR},
-      </if>
-      <if test="itemCreateDate != null" >
-        item_create_date = #{itemCreateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="itemUpdateDate != null" >
-        item_update_date = #{itemUpdateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="itemDescribe != null" >
-        item_describe = #{itemDescribe,jdbcType=VARCHAR},
-      </if>
-      <if test="itemUserId != null" >
-        item_user_id = #{itemUserId,jdbcType=INTEGER},
-      </if>
-      <if test="itemUserPhone != null" >
-        item_user_phone = #{itemUserPhone,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where item_id = #{itemId,jdbcType=INTEGER}
-  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.bjtc.pojo.Item" >
     update item
     set item_name = #{itemName,jdbcType=VARCHAR},

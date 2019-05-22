@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bjtc.mapper.OrderMapper" >
   <resultMap id="BaseResultMap" type="com.bjtc.pojo.Order" >
-    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <id column="order_id" property="orderId" jdbcType="INTEGER" />
     <result column="order_seller_id" property="orderSellerId" jdbcType="INTEGER" />
     <result column="order_seller_name" property="orderSellerName" jdbcType="VARCHAR" />
     <result column="order_buyer_id" property="orderBuyerId" jdbcType="INTEGER" />
@@ -11,10 +11,18 @@
     <result column="order_status" property="orderStatus" jdbcType="CHAR" />
     <result column="order_item_describe" property="orderItemDescribe" jdbcType="VARCHAR" />
     <result column="order_receive_name" property="orderReceiveName" jdbcType="VARCHAR" />
+    <result column="order_size" property="orderSize" jdbcType="VARCHAR"/>
     <result column="order_price" property="orderPrice" jdbcType="DOUBLE" />
     <result column="order_seller_phone" property="orderSellerPhone" jdbcType="VARCHAR"/>
     <result column="order_buyer_phone" property="orderBuyerPhone" jdbcType="VARCHAR"/>
     <result column="order_receive_phone" property="orderReceivePhone" jdbcType="VARCHAR"/>
+    <result column="order_create_date" property="orderCreateDate" jdbcType="TIMESTAMP"/>
+    <result column="order_update_date" property="orderUpdateDate" jdbcType="TIMESTAMP"/>
+    <result column="order_buyer_date" property="orderBuyerDate" jdbcType="TIMESTAMP"/>
+    <result column="order_shop_address" property="orderShopAddress" jdbcType="VARCHAR"/>
+    <result column="order_buyer_address" property="orderBuyerAddress" jdbcType="VARCHAR"/>
+    <result column="order_remarks" property="orderRemarks" jdbcType="VARCHAR"/>
+    <result column="order_delivery_pattern" property="orderDeliveryPattern" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -83,24 +91,55 @@
     select * from `order` where order_seller_id = #{adminId}
   </select>
   <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select * from `order` where order_seller_phone = #{phone,jdbcType=VARCHAR} or order_buyer_phone = #{phone,jdbcType=VARCHAR}
+    select * from `order` where order_seller_phone = #{phone,jdbcType=VARCHAR} or order_buyer_phone =#{phone}
+    or order_receive_phone = #{phone}
+  </select>
+  <select id="selectOrderByPhoneAndTime" resultMap="BaseResultMap">
+    select * from `order` where order_seller_phone = #{phone,jdbcType=VARCHAR} and order_create_date like #{time,jdbcType=TIMESTAMP}
+  </select>
+  <select id="selectOrderByPhoneAndTimeAndOrderId" resultMap="BaseResultMap">
+    select * from `order`
+    where
+    1=1
+    <if test="orderId !=null" >
+      and  order_id = #{orderId,jdbcType=VARCHAR}
+    </if>
+    <if test="phone !=null">
+      and (order_seller_phone = #{phone,jdbcType=VARCHAR} or order_buyer_phone = #{phone,jdbcType=VARCHAR} or order_receive_phone = #{phone,jdbcType=VARCHAR})
+    </if>
+    <if test="time !=null">
+     and order_create_date like #{time,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="getTotalSales" resultType="java.lang.Double">
+    select sum(order_price) from `order`
+  </select>
+  <select id="getTotalSalesByPhone" resultType="java.lang.Double">
+    select sum(order_price) from `order` where order_seller_phone = #{phone}
+  </select>
+
+  <select id="selectOrdersByPhoneAndStatus" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from `order` where order_seller_phone = #{phone} or order_buyer_phone = #{phone} or order_receive_phone = #{phone}
+    and order_status = #{status}
+  </select>
+  <!-- 根据开始页查询，每次返回10条 -->
+  <select id="selectOrderByStartPage" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from `order` order by order_create_date desc limit #{startPage},10
+  </select>
+
+  <select id="selectOrderByStatusAndStartPage" resultMap="BaseResultMap">
+    select * from `order` where order_status = #{status,jdbcType=VARCHAR} order by order_create_date desc  limit #{startPage,jdbcType=INTEGER},10
+  </select>
+  <select id="selectOrderByPhoneAndStartPage" resultMap="BaseResultMap">
+    select * from `order` where order_buyer_phone = #{phone,jdbcType=VARCHAR} or order_seller_phone = #{phone,jdbcType=VARCHAR} or order_receive_phone = #{phone,jdbcType=VARCHAR} order by order_create_date limit #{startPage,jdbcType=INTEGER},10
   </select>
   <select id="selectByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
     select * from `order` where order_id = #{orderId}
   </select>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bjtc.pojo.OrderExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from order
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
+  <select id="selectOrdersByStatusAndPhoneAndPage" resultMap="BaseResultMap">
+    select * from `order` where order_seller_phone = #{phone} or order_buyer_phone = #{phone} or order_receive_phone = #{phone}
+     and order_status = #{orderStatus} order by order_create_date
+    limit #{startPage,jdbcType=INTEGER},10
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -112,184 +151,57 @@
     delete from `order`
     where order_id = #{orderId,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.bjtc.pojo.OrderExample" >
-    delete from `order`
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
   <insert id="insert" parameterType="com.bjtc.pojo.Order" >
-    insert into order (order_id, order_seller_id, order_seller_name, 
+    insert into `order` (order_id, order_seller_id, order_seller_name,
       order_buyer_id, order_buyer_name, order_receive_id, 
-      order_status, order_item_describe, order_receive_name, 
-      order_price)
-    values (#{orderId,jdbcType=VARCHAR}, #{orderSellerId,jdbcType=INTEGER}, #{orderSellerName,jdbcType=VARCHAR},
-      #{orderBuyerId,jdbcType=INTEGER}, #{orderBuyerName,jdbcType=VARCHAR}, #{orderReceiveId,jdbcType=INTEGER}, 
-      #{orderStatus,jdbcType=CHAR}, #{orderItemDescribe,jdbcType=VARCHAR}, #{orderReceiveName,jdbcType=VARCHAR}, 
-      #{orderPrice,jdbcType=DOUBLE})
+      order_status, order_item_describe, order_receive_name, order_size,
+      order_price,order_seller_phone,order_buyer_phone,order_receive_phone,
+      order_create_date,order_update_date,order_buyer_date,order_shop_address,
+      order_buyer_address,order_remarks,order_delivery_pattern)
+    values (#{orderId,jdbcType=INTEGER}, #{orderSellerId,jdbcType=INTEGER}, #{orderSellerName,jdbcType=VARCHAR},
+      #{orderBuyerId,jdbcType=INTEGER}, #{orderBuyerName,jdbcType=VARCHAR}, #{orderReceiveId,jdbcType=INTEGER},
+      #{orderStatus,jdbcType=CHAR}, #{orderItemDescribe,jdbcType=VARCHAR}, #{orderReceiveName,jdbcType=VARCHAR},
+      #{orderSize,jdbcType=VARCHAR},#{orderPrice,jdbcType=DOUBLE},#{orderSellerPhone,jdbcType=VARCHAR},
+      #{orderBuyerPhone,jdbcType=VARCHAR},#{orderReceivePhone,jdbcType=VARCHAR},#{orderCreateDate,jdbcType=TIMESTAMP},
+      #{orderUpdateDate,jdbcType=TIMESTAMP},#{orderBuyerDate,jdbcType=TIMESTAMP},
+      #{orderShopAddress,jdbcType=VARCHAR},#{orderBuyerAddress,jdbcType=VARCHAR},#{orderRemarks,jdbcType=VARCHAR},
+      #{orderDeliveryPattern,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.bjtc.pojo.Order" >
-    insert into order
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="orderId != null" >
-        order_id,
-      </if>
-      <if test="orderSellerId != null" >
-        order_seller_id,
-      </if>
-      <if test="orderSellerName != null" >
-        order_seller_name,
-      </if>
-      <if test="orderBuyerId != null" >
-        order_buyer_id,
-      </if>
-      <if test="orderBuyerName != null" >
-        order_buyer_name,
-      </if>
-      <if test="orderReceiveId != null" >
-        order_receive_id,
-      </if>
-      <if test="orderStatus != null" >
-        order_status,
-      </if>
-      <if test="orderItemDescribe != null" >
-        order_item_describe,
-      </if>
-      <if test="orderReceiveName != null" >
-        order_receive_name,
-      </if>
-      <if test="orderPrice != null" >
-        order_price,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="orderId != null" >
-        #{orderId,jdbcType=VARCHAR},
-      </if>
-      <if test="orderSellerId != null" >
-        #{orderSellerId,jdbcType=INTEGER},
-      </if>
-      <if test="orderSellerName != null" >
-        #{orderSellerName,jdbcType=VARCHAR},
-      </if>
-      <if test="orderBuyerId != null" >
-        #{orderBuyerId,jdbcType=INTEGER},
-      </if>
-      <if test="orderBuyerName != null" >
-        #{orderBuyerName,jdbcType=VARCHAR},
-      </if>
-      <if test="orderReceiveId != null" >
-        #{orderReceiveId,jdbcType=INTEGER},
-      </if>
-      <if test="orderStatus != null" >
-        #{orderStatus,jdbcType=CHAR},
-      </if>
-      <if test="orderItemDescribe != null" >
-        #{orderItemDescribe,jdbcType=VARCHAR},
-      </if>
-      <if test="orderReceiveName != null" >
-        #{orderReceiveName,jdbcType=VARCHAR},
-      </if>
-      <if test="orderPrice != null" >
-        #{orderPrice,jdbcType=DOUBLE},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.bjtc.pojo.OrderExample" resultType="java.lang.Integer" >
-    select count(*) from order
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
+  <select id="selectByOrderStatus" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from `order` where order_status = #{status} order by order_create_date desc
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update order
-    <set >
-      <if test="record.orderId != null" >
-        order_id = #{record.orderId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.orderSellerId != null" >
-        order_seller_id = #{record.orderSellerId,jdbcType=INTEGER},
-      </if>
-      <if test="record.orderSellerName != null" >
-        order_seller_name = #{record.orderSellerName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.orderBuyerId != null" >
-        order_buyer_id = #{record.orderBuyerId,jdbcType=INTEGER},
-      </if>
-      <if test="record.orderBuyerName != null" >
-        order_buyer_name = #{record.orderBuyerName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.orderReceiveId != null" >
-        order_receive_id = #{record.orderReceiveId,jdbcType=INTEGER},
-      </if>
-      <if test="record.orderStatus != null" >
-        order_status = #{record.orderStatus,jdbcType=CHAR},
-      </if>
-      <if test="record.orderItemDescribe != null" >
-        order_item_describe = #{record.orderItemDescribe,jdbcType=VARCHAR},
-      </if>
-      <if test="record.orderReceiveName != null" >
-        order_receive_name = #{record.orderReceiveName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.orderPrice != null" >
-        order_price = #{record.orderPrice,jdbcType=DOUBLE},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update order
-    set order_id = #{record.orderId,jdbcType=VARCHAR},
-      order_seller_id = #{record.orderSellerId,jdbcType=INTEGER},
-      order_seller_name = #{record.orderSellerName,jdbcType=VARCHAR},
-      order_buyer_id = #{record.orderBuyerId,jdbcType=INTEGER},
-      order_buyer_name = #{record.orderBuyerName,jdbcType=VARCHAR},
-      order_receive_id = #{record.orderReceiveId,jdbcType=INTEGER},
-      order_status = #{record.orderStatus,jdbcType=CHAR},
-      order_item_describe = #{record.orderItemDescribe,jdbcType=VARCHAR},
-      order_receive_name = #{record.orderReceiveName,jdbcType=VARCHAR},
-      order_price = #{record.orderPrice,jdbcType=DOUBLE}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.bjtc.pojo.Order" >
-    update order
-    <set >
-      <if test="orderSellerId != null" >
-        order_seller_id = #{orderSellerId,jdbcType=INTEGER},
-      </if>
-      <if test="orderSellerName != null" >
-        order_seller_name = #{orderSellerName,jdbcType=VARCHAR},
-      </if>
-      <if test="orderBuyerId != null" >
-        order_buyer_id = #{orderBuyerId,jdbcType=INTEGER},
-      </if>
-      <if test="orderBuyerName != null" >
-        order_buyer_name = #{orderBuyerName,jdbcType=VARCHAR},
-      </if>
-      <if test="orderReceiveId != null" >
-        order_receive_id = #{orderReceiveId,jdbcType=INTEGER},
-      </if>
-      <if test="orderStatus != null" >
-        order_status = #{orderStatus,jdbcType=CHAR},
-      </if>
-      <if test="orderItemDescribe != null" >
-        order_item_describe = #{orderItemDescribe,jdbcType=VARCHAR},
-      </if>
-      <if test="orderReceiveName != null" >
-        order_receive_name = #{orderReceiveName,jdbcType=VARCHAR},
-      </if>
-      <if test="orderPrice != null" >
-        order_price = #{orderPrice,jdbcType=DOUBLE},
-      </if>
-    </set>
-    where order_id = #{orderId,jdbcType=VARCHAR}
-  </update>
+  <select id="searchOrdersByContent" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from `order` where order_shop_address like #{searchContent} or order_size like #{searchContent}
+  </select>
+  <select id="selectAllOrders" resultMap="BaseResultMap">
+    select * from `order` ;
+  </select>
+  <select id="selectAmountByPhoneAndTime" resultType="java.lang.Double">
+    select count(*) from `order`
+    where order_seller_phone=#{phone} and order_create_date between #{startTime} and #{endTime}
+  </select>
+  <select id="selectAmountByAddressAndTime" parameterType="java.lang.String" resultType="java.lang.Double">
+    select count(*) from `order`
+    where order_shop_address like #{address} and order_create_date between #{startTime} and #{endTime}
+  </select>
+  <select id="selectAllAmountByPhoneLikeTime" parameterType="java.lang.String" resultType="java.lang.Double">
+    select count(*) from `order`
+    where order_seller_phone=#{phone} and order_create_date like #{time}
+  </select>
+  <select id="selectAmountByAddressLikeTime" parameterType="java.lang.String" resultType="java.lang.Double">
+    select count(*) from `order`
+    where order_shop_address like #{address} and order_create_date like #{time}
+  </select>
+  <select id="selectAllAmountByTime" resultType="java.lang.Double">
+    select count(*) from `order`
+    where order_create_date between #{startTime} and #{endTime}
+  </select>
+  <select id="selectAllAmountLikeTime" parameterType="java.lang.String" resultType="java.lang.Double">
+    select count(*) from `order`
+    where order_create_date like #{time}
+  </select>
   <update id="updateByPrimaryKey" parameterType="com.bjtc.pojo.Order" >
-    update order
+    update `order`
     set order_seller_id = #{orderSellerId,jdbcType=INTEGER},
       order_seller_name = #{orderSellerName,jdbcType=VARCHAR},
       order_buyer_id = #{orderBuyerId,jdbcType=INTEGER},
@@ -298,7 +210,18 @@
       order_status = #{orderStatus,jdbcType=CHAR},
       order_item_describe = #{orderItemDescribe,jdbcType=VARCHAR},
       order_receive_name = #{orderReceiveName,jdbcType=VARCHAR},
-      order_price = #{orderPrice,jdbcType=DOUBLE}
+      order_size = #{orderSize,jdbcType=VARCHAR},
+      order_price = #{orderPrice,jdbcType=DOUBLE},
+      order_seller_phone=#{orderSellerPhone},
+      order_buyer_phone=#{orderBuyerPhone},
+      order_receive_phone=#{orderReceivePhone},
+      order_create_date=#{orderCreateDate},
+      order_update_date=#{orderUpdateDate},
+      order_buyer_date=#{orderBuyerDate},
+      order_shop_address=#{orderShopAddress,jdbcType=VARCHAR},
+      order_buyer_address=#{orderBuyerAddress,jdbcType=VARCHAR},
+      order_remarks = #{orderRemarks,jdbcType=VARCHAR},
+      order_delivery_pattern = #{orderDeliveryPattern,jdbcType=VARCHAR}
     where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
 </mapper>

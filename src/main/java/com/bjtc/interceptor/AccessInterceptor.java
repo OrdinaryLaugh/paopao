@@ -28,7 +28,6 @@ public class AccessInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
-        System.out.println(request.getRequestURI());
         if(request.getRequestURI().equals("/paopao/user/userLogin")){
             response.setHeader("message","success");
             return true;
